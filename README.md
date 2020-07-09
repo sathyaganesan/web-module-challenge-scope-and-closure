@@ -42,6 +42,8 @@ Find the file `index.js` and complete the tasks.
 Edit the `ReadMe` file with your answers.
 
 1. In your own words, define closure (1-2 sentences).
+Closure is a combination of multiple functions that give you access to our scope.
+
 2. Study the following code, then answer the questions below.
 
 ```js
@@ -63,8 +65,13 @@ dansRoll();
 ```
 
 a. Where is closure used in this code? How can you tell?
+console line is the closure line.
+
 b. Compare and contrast calling `dansRoll` the first and second time. What is always the same? What could change?
+personalDice is the same and Arguments can change.
+
 c. What is the lexical scope of `newRoll`? 
+lexical scope - Math.floor(Math.random() * 6);
 
 ### Task 2c - Exit Ticket
 

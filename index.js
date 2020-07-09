@@ -31,11 +31,11 @@ function processFirstItem(stringList, callback) {
  *  => In counter2 variable is declared inside the function.
  * 
  * 2. Which of the two uses a closure? How can you tell?
- *  => Counter2 uses the closure because the variable is declared outside the function counter2().
+ *  => Counter1 uses the closure because the variable is declared outside the function counter2().
  * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
  * => Counter1 is prefered when the variable is no need to increase.
- * => Counter2 is prefered to when the variables are supposed to increase.
+ * => Counter2 is prefered to when the variables are supposed to access because its a global.
  *
 */
 
@@ -48,6 +48,7 @@ function counterMaker() {
 }
 
 const counter1 = counterMaker();
+
 
 // counter2 code
 let count = 0;
@@ -63,15 +64,16 @@ Write a function called `inning` that returns a random number of points that a t
 This should be a whole number between 0 and 2. */
 
 function inning(){
-  let ranNumber = Math.round(Math.random() * 2);
-  console.log(ranNumber);
+  let ranNumber = Math.floor(Math.random() * 3);
+  return ranNumber;
 }
 
-  inning();
+ console.log(inning());
 
 /* Task 3: finalScore()
 
-Write a higher order function called `finalScore` that accepts the callback function `inning` (from above) and a number of innings and and returns the final score of the game in the form of an object.
+Write a higher order function called `finalScore` that accepts the callback function `inning` (from above) and
+ a number of innings and and returns the final score of the game in the form of an object.
 
 For example, 
 
@@ -83,35 +85,75 @@ finalScore(inning, 9) might return:
 
 */ 
 
-function finalScore(/*code Here*/){
-
-  /*Code Here*/
-
+function finalScore(fun, noOfInnings){
+  let homeScore = 0;
+  let awayScore = 0;
+  for (let i = 0; i < noOfInnings; i++) {
+    homeScore = (homeScore + fun());
+  }
+  for (let i = 0; i < noOfInnings; i++) {
+    awayScore = (awayScore + fun());
+  }
+  let score = {Home: homeScore, Away: awayScore};
+ return score;
 }
 
-/* Task 4: 
-
+ console.log(finalScore(inning, 9));
+  
+ /* Task 4: 
 Create a function called `scoreboard` that accepts the following parameters: 
+(1) Callback function `getInningScore`
+(2) Callback function `inning`
+(3) A number of innings
 
-(1) Callback function `inning` that you wrote above
-(2) A number of innings
+and returns the score at each point in the game, like so:
+1st inning: awayTeam - homeTeam
+2nd inning: awayTeam - homeTeam
+3rd inning: awayTeam - homeTeam
+4th inning: awayTeam - homeTeam
+5th inning: awayTeam - homeTeam
+6th inning: awayTeam - homeTeam
+7th inning: awayTeam - homeTeam
+8th inning: awayTeam - homeTeam
+9th inning: awayTeam - homeTeam
+Final Score: awayTeam - homeTeam */
+  let awayFinalTotal = 0;
+  let homeFinalTotal = 0;
+  let sumAwayTotal = [];
+  let sumHomeTotal = [];
+  let finalSum = 0;
+  function scoreboard(callback1, callback2, numOfInnings) {
+    for (let i = 1; i <= numOfInnings; i++) {
+        awayFinalTotal = callback2();
+        sumAwayTotal.push(awayFinalTotal);
+        homeFinalTotal = callback2();
+        sumHomeTotal.push(homeFinalTotal);
+        if (i === 1){
+            console.log(`1st inning: ${callback1()}`);
+        } else if (i === 2){
+            console.log(`2nd inning: ${callback1()}`);
+        } else if (i === 3){
+            console.log(`3rd inning: ${callback1()}`);
+        } else {
+            console.log(`${i}th inning: ${callback1()}`);
+        }
+    }  
+    function getArraySum(a){
+        var total=0;
+        for(var i in a) { 
+            total += a[i];
+        }
+        return total;
+    }
+    
+    let awayFinalSum = getArraySum(sumAwayTotal);
+    let homeFinalSum = getArraySum(sumHomeTotal);
+    console.log(`Final Score: ${awayFinalSum} - ${homeFinalSum}`);
+  }
 
-and returns the score at each pont in the game, like so:
-
-1st inning: 0 - 2
-2nd inning: 1 - 3
-3rd inning: 1 - 3
-4th inning: 2 - 4
-5th inning: 4 - 6
-6th inning: 4 - 6
-7th inning: 4 - 6
-8th inning: 5 - 8
-9th inning: 6 - 10
-
-Final Score: 6 - 10 */
-
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
-}
-
-
+   function getInningScore(){
+    awayFinal = awayFinalTotal;
+    homeFinal = homeFinalTotal;
+    return `${awayFinal} - ${homeFinal}`;
+   }
+  scoreboard(getInningScore, inning, 9);
